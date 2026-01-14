@@ -3,75 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[웹툰] 퍼명세</title>
+    <title>퍼명세</title>
     <style>
-        /* 기본 테마 */
+        /* 네이버 웹툰 테마: 흰색 배경 & 연한 회색 구분선 */
         body { 
             margin: 0; 
-            background-color: #0f0f0f; 
-            color: white; 
+            background-color: #ffffff; 
+            color: #111111; 
             font-family: 'Pretendard', -apple-system, sans-serif; 
             display: none; /* 인증 전 숨김 */
             flex-direction: column; 
             align-items: center; 
-            padding-bottom: 50px;
+            min-height: 100vh;
         }
 
-        /* 헤더/배너 */
+        /* 헤더 영역 */
         header {
             width: 100%;
-            max-width: 800px;
-            margin-bottom: 20px;
-            text-align: center;
+            max-width: 720px;
+            border-bottom: 1px solid #eeeeee;
         }
 
         .title-img {
             width: 100%;
+            display: block;
             height: auto;
-            border-bottom: 2px solid #00ffcc;
-            box-shadow: 0 10px 20px rgba(0, 255, 204, 0.1);
         }
 
         h1 { 
-            font-size: 1.6rem;
-            margin: 25px 0;
-            color: #00ffcc; 
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 255, 204, 0.3); 
+            font-size: 1.4rem;
+            margin: 20px;
+            font-weight: 800;
+            text-align: left; /* 왼쪽 정렬이 더 웹툰스럽습니다 */
         }
 
-        /* 심플 에피소드 리스트 */
+        /* 에피소드 리스트: 선으로 구분된 깔끔한 스타일 */
         .episode-list {
             list-style: none;
             padding: 0;
-            width: 85%;
-            max-width: 500px;
+            width: 100%;
+            max-width: 720px;
         }
 
         .episode-item {
-            margin-bottom: 12px;
+            border-bottom: 1px solid #f2f2f2;
         }
 
         .episode-link {
-            display: block;
-            text-align: center; /* 텍스트 중앙 정렬 */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* 텍스트 중앙 정렬 */
             text-decoration: none;
-            color: white;
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #333;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: all 0.2s ease;
+            color: #333333;
+            padding: 25px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
         }
 
-        /* 마우스 올렸을 때 효과 */
-        .episode-link:hover {
-            border-color: #00ffcc;
-            background-color: #252525;
-            color: #00ffcc;
-            transform: scale(1.02); /* 살짝 커지는 효과 */
+        /* 터치하거나 마우스 올렸을 때 네이버 그린 포인트 */
+        .episode-link:active, .episode-link:hover {
+            background-color: #f9f9f9;
+            color: #00D564; /* 네이버 웹툰 시그니처 그린 */
+        }
+
+        /* 하단 여백 */
+        footer {
+            margin-top: auto;
+            padding: 40px 0;
+            font-size: 0.8rem;
+            color: #999999;
         }
     </style>
 </head>
@@ -87,6 +88,10 @@
             <a href="./ep1/" class="episode-link">1화</a>
         </li>
         </ul>
+
+    <footer>
+        © 2026 퍼명세 All Rights Reserved.
+    </footer>
 
     <script>
         const pw = "1208";
@@ -105,5 +110,3 @@
     </script>
 </body>
 </html>
-
-
