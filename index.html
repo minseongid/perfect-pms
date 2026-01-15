@@ -5,62 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[웹툰] 퍼명세</title>
     <style>
-        /* 1. 기본 테마 */
+        /* 1. 기본 테마 설정 */
         body { 
             margin: 0; background-color: #ffffff; color: #111111; 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            display: flex; /* body는 항상 보이게 설정 */
-            flex-direction: column; align-items: center; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* 2. 비밀번호 모달창 스타일 */
+        /* 2. 비밀번호 모달 (기존 기능 유지) */
         #pw-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #ffffff; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 1000;
         }
         .modal-content { text-align: center; width: 80%; max-width: 300px; }
-        .modal-content h2 { font-size: 1.4rem; margin-bottom: 10px; color: #111; }
-        .modal-content p { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
-        
         .modal-content input { 
             width: 100%; padding: 12px; margin-bottom: 15px;
             font-size: 1.1rem; text-align: center; border: 1px solid #ddd;
             border-radius: 8px; box-sizing: border-box; outline: none;
         }
-        .modal-content input:focus { border-color: #00D564; }
-        
         .modal-content button {
             width: 100%; padding: 12px; background-color: #00D564; color: white;
-            border: none; border-radius: 8px; font-weight: bold; font-size: 1rem;
-            cursor: pointer; transition: background 0.2s;
+            border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer;
         }
 
         /* 3. 웹툰 본문 레이아웃 (인증 전 숨김) */
         #main-content {
-            display: none; /* 처음에 숨김 처리 */
-            width: 100%;
+            display: none; width: 100%; max-width: 720px;
             flex-direction: column;
-            align-items: center;
         }
 
-        header { width: 100%; max-width: 720px; border-bottom: 1px solid #eeeeee; }
+        /* 헤더: 타이틀 이미지 */
+        header { width: 100%; position: relative; }
         .title-img { width: 100%; display: block; height: auto; }
-        
-        /* 설명 문구 스타일 */
+
+        /* 웹툰 정보 영역 */
+        .info-section { padding: 20px 16px; border-bottom: 8px solid #f4f4f4; }
+        .webtoon-title { font-size: 1.4rem; font-weight: 800; margin: 0 0 8px 0; }
+        .webtoon-author { font-size: 0.9rem; color: #00D564; font-weight: 600; margin-bottom: 12px; }
         .description { 
-            font-size: 1rem; padding: 20px; line-height: 1.6; 
-            color: #444; word-break: keep-all; 
+            font-size: 0.95rem; line-height: 1.5; color: #666; 
+            word-break: keep-all; margin: 0;
         }
 
-        .episode-list { list-style: none; padding: 0; width: 100%; max-width: 720px; }
+        /* 에피소드 리스트 */
+        .episode-list { list-style: none; padding: 0; margin: 0; }
         .episode-item { border-bottom: 1px solid #f2f2f2; }
+        
         .episode-link {
-            display: flex; align-items: center; justify-content: center;
-            text-decoration: none; color: #333333; padding: 25px 20px;
-            font-size: 1.1rem; font-weight: 600;
+            display: flex; align-items: center; text-decoration: none;
+            color: #333333; padding: 12px 16px; transition: background 0.2s;
         }
-        footer { padding: 40px 0; font-size: 0.8rem; color: #999999; }
+        .episode-link:active { background-color: #f9f9f9; }
+
+        /* 썸네일 박스 (네이버 웹툰 특유의 비율) */
+        .ep-thumbnail {
+            width: 85px; height: 50px; background-color: #eee;
+            border-radius: 4px; overflow: hidden; margin-right: 15px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .ep-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 회차 정보 */
+        .ep-info { flex-grow: 1; }
+        .ep-title { font-size: 1rem; font-weight: 600; margin-bottom: 4px; display: block; }
+        .ep-subtext { font-size: 0.8rem; color: #999; }
+
+        footer { padding: 40px 0; text-align: center; font-size: 0.8rem; color: #bbb; background-color: #ffffff; }
     </style>
 </head>
 <body>
@@ -77,14 +88,27 @@
     <div id="main-content">
         <header>
             <img src="title.jpg" alt="퍼명세 타이틀" class="title-img">
-            <div class="description">
-                상위 1%의 삶, 누구나 꿈꾸는 완벽한 성공, 그 정점에 선 남자, 박명세의 추악한 민낯을 파헤친다.
-            </div>
         </header>
+
+        <section class="info-section">
+            <h1 class="webtoon-title">퍼명세</h1>
+            <div class="webtoon-author">작가님 성함 또는 닉네임</div>
+            <p class="description">
+                상위 1%의 삶, 누구나 꿈꾸는 완벽한 성공, 그 정점에 선 남자, 박명세의 추악한 민낯을 파헤친다.
+            </p>
+        </section>
 
         <ul class="episode-list">
             <li class="episode-item">
-                <a href="./ep1/" class="episode-link">1화</a>
+                <a href="./ep1/" class="episode-link">
+                    <div class="ep-thumbnail">
+                        <img src="./ep1/01.jpg" alt="1화 썸네일">
+                    </div>
+                    <div class="ep-info">
+                        <span class="ep-title">1화</span>
+                        <span class="ep-subtext">2026.01.16</span>
+                    </div>
+                </a>
             </li>
         </ul>
 
@@ -97,13 +121,8 @@
         function checkPassword() {
             const pw = "1208";
             const input = document.getElementById('pw-input').value;
-            
-            if (input && input.trim() === pw) {
-                showContent();
-            } else {
-                alert("비밀번호가 틀렸습니다.");
-                document.getElementById('pw-input').value = "";
-            }
+            if (input && input.trim() === pw) { showContent(); } 
+            else { alert("비밀번호가 틀렸습니다."); document.getElementById('pw-input').value = ""; }
         }
 
         function showContent() {
@@ -112,13 +131,9 @@
             document.getElementById('main-content').style.display = "flex";
         }
 
-        // 페이지 로드 시 인증 상태 확인
         window.onload = function() {
-            if (sessionStorage.getItem("authenticated") === "true") {
-                showContent();
-            }
+            if (sessionStorage.getItem("authenticated") === "true") { showContent(); }
         }
     </script>
 </body>
 </html>
-
