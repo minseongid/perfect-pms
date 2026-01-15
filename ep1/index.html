@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>퍼명세 - 1화</title>
     <style>
-        /* 1. 기본 테마: 흰색 배경 */
+        /* 1. 기본 테마: 네이버 웹툰 스타일 (흰색 배경) */
         body { 
             margin: 0; 
             background-color: #ffffff; 
@@ -15,7 +15,7 @@
             font-family: 'Pretendard', -apple-system, sans-serif;
         }
 
-        /* 2. 상단 헤더 바 (네이버 웹툰 스타일) */
+        /* 2. 상단 헤더 바 (고정) */
         .top-bar {
             position: sticky; top: 0; width: 100%; height: 50px;
             background-color: #ffffff; border-bottom: 1px solid #eeeeee;
@@ -24,10 +24,19 @@
         }
         .top-bar .title { font-weight: bold; font-size: 1rem; color: #111; }
 
-        /* 3. 이미지 영역 */
+        /* 3. 음악 On/Off 플로팅 버튼 */
+        .audio-control {
+            position: fixed; top: 60px; right: 15px; z-index: 1001;
+            background: rgba(255, 255, 255, 0.9); border-radius: 50%;
+            width: 40px; height: 40px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 1.2rem;
+        }
+
+        /* 4. 웹툰 이미지 영역 */
         .viewer-content {
             width: 100%;
-            max-width: 800px; /* PC에서도 보기 적당한 너비 */
+            max-width: 800px;
             display: flex;
             flex-direction: column;
         }
@@ -37,7 +46,7 @@
             border: none;
         }
 
-        /* 4. 하단 네비게이션 바 */
+        /* 5. 하단 네비게이션 버튼 */
         .nav-bar {
             display: flex;
             gap: 10px;
@@ -45,7 +54,6 @@
             width: 90%;
             max-width: 400px;
         }
-
         .nav-btn {
             flex: 1;
             padding: 15px 0;
@@ -56,26 +64,19 @@
             border-radius: 6px;
             transition: all 0.2s;
         }
-
-        /* 목록으로 버튼: 회색 스타일 */
-        .btn-list {
-            background-color: #f4f4f4;
-            color: #666;
-        }
-
-        /* 다음화 버튼: 네이버 그린 스타일 */
-        .btn-next {
-            background-color: #00D564;
-            color: #ffffff;
-        }
-
+        .btn-list { background-color: #f4f4f4; color: #666; }
+        .btn-next { background-color: #00D564; color: #ffffff; }
         .nav-btn:active { transform: scale(0.97); }
-
-        /* 버튼 숨기기 */
         .hidden { display: none; }
     </style>
 </head>
 <body>
+
+    <audio id="myAudio" loop>
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="audio-control" id="audioBtn" onclick="toggleAudio()">🎵</div>
 
     <div class="top-bar">
         <div class="title">1화</div>
@@ -90,9 +91,37 @@
 
     <div class="nav-bar">
         <a href="../index.html" class="nav-btn btn-list">목록으로</a>
-        
         <a href="../ep2/" class="nav-btn btn-next hidden">다음화</a>
     </div>
 
+    <script>
+        var audio = document.getElementById("myAudio");
+        var audioBtn = document.getElementById("audioBtn");
+
+        // 페이지 로드 시 음악 재생 시도
+        window.onload = function() {
+            audio.volume = 0.5; // 볼륨 50%
+            var playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // 브라우저가 자동재생을 막은 경우
+                    console.log("자동 재생이 차단되었습니다. 버튼을 눌러 재생해주세요.");
+                    audioBtn.innerText = "🔇";
+                });
+            }
+        }
+
+        // 음악 켜기/끄기 기능
+        function toggleAudio() {
+            if (audio.paused) {
+                audio.play();
+                audioBtn.innerText = "🎵";
+            } else {
+                audio.pause();
+                audioBtn.innerText = "🔇";
+            }
+        }
+    </script>
 </body>
 </html>
