@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>퍼명세 - 1화</title>
     <style>
-        /* 1. 기본 테마: 네이버 웹툰 스타일 (흰색 배경) */
         body { 
             margin: 0; 
             background-color: #ffffff; 
@@ -15,30 +14,44 @@
             font-family: 'Pretendard', -apple-system, sans-serif;
         }
 
-        /* 2. 상단 헤더 바 (고정) */
+        /* 1. 상단 헤더 바 개선: 고정 방식 변경 및 애니메이션 추가 */
         .top-bar {
-            position: sticky; top: 0; width: 100%; height: 50px;
-            background-color: #ffffff; border-bottom: 1px solid #eeeeee;
-            display: flex; align-items: center; justify-content: center;
+            position: fixed; /* sticky 대신 fixed로 변경하여 제어 */
+            top: 0; 
+            width: 100%; 
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.95); /* 살짝 투명하게 변경 */
+            border-bottom: 1px solid #eeeeee;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
             z-index: 100;
+            transition: top 0.3s ease-in-out; /* 부드럽게 사라지고 나타남 */
         }
+        
+        /* 헤더가 숨겨질 때 사용할 클래스 */
+        .top-bar.hide {
+            top: -55px; 
+        }
+
         .top-bar .title { font-weight: bold; font-size: 1rem; color: #111; }
 
-        /* 3. 음악 On/Off 플로팅 버튼 */
         .audio-control {
             position: fixed; top: 60px; right: 15px; z-index: 1001;
             background: rgba(255, 255, 255, 0.9); border-radius: 50%;
             width: 40px; height: 40px; display: flex; align-items: center;
             justify-content: center; cursor: pointer; border: 1px solid #ddd;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 1.2rem;
+            transition: opacity 0.3s; /* 음악 버튼도 자연스럽게 */
         }
 
-        /* 4. 웹툰 이미지 영역 */
+        /* 2. 이미지 영역: 헤더가 fixed이므로 상단 여백 추가 */
         .viewer-content {
             width: 100%;
             max-width: 800px;
             display: flex;
             flex-direction: column;
+            padding-top: 50px; /* 헤더 높이만큼 띄워줌 */
         }
         img { 
             width: 100%; 
@@ -46,7 +59,6 @@
             border: none;
         }
 
-        /* 5. 하단 네비게이션 버튼 */
         .nav-bar {
             display: flex;
             gap: 10px;
@@ -78,7 +90,7 @@
 
     <div class="audio-control" id="audioBtn" onclick="toggleAudio()">🎵</div>
 
-    <div class="top-bar">
+    <div class="top-bar" id="topBar">
         <div class="title">1화</div>
     </div>
 
@@ -97,22 +109,35 @@
     <script>
         var audio = document.getElementById("myAudio");
         var audioBtn = document.getElementById("audioBtn");
+        var topBar = document.getElementById("topBar");
+        var lastScrollTop = 0;
 
-        // 페이지 로드 시 음악 재생 시도
+        // 1. 스크롤 감지하여 헤더 숨기기/보이기
+        window.addEventListener("scroll", function() {
+            var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                // 아래로 스크롤 중 -> 헤더 숨김
+                topBar.classList.add("hide");
+            } else {
+                // 위로 스크롤 중 -> 헤더 나타남
+                topBar.classList.remove("hide");
+            }
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        }, false);
+
+        // 2. 음악 재생 로직
         window.onload = function() {
-            audio.volume = 0.5; // 볼륨 50%
+            audio.volume = 0.5;
             var playPromise = audio.play();
-
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    // 브라우저가 자동재생을 막은 경우
-                    console.log("자동 재생이 차단되었습니다. 버튼을 눌러 재생해주세요.");
+                    console.log("자동 재생 차단");
                     audioBtn.innerText = "🔇";
                 });
             }
         }
 
-        // 음악 켜기/끄기 기능
         function toggleAudio() {
             if (audio.paused) {
                 audio.play();
