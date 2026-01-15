@@ -3,107 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>퍼명세</title>
+    <title>[웹툰] 퍼명세</title>
     <style>
+        /* 1. 기본 테마 (네이버 웹툰 스타일) */
         body { 
-            margin: 0; 
-            background-color: #ffffff; 
-            color: #111111; 
+            margin: 0; background-color: #ffffff; color: #111111; 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            display: none;
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh;
+            display: none; /* 인증 전까지 본문 숨김 */
+            flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* 헤더 영역 */
-        header {
-            width: 100%;
-            max-width: 720px;
-            border-bottom: 1px solid #eeeeee;
+        /* 2. 비밀번호 모달창 스타일 */
+        #pw-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffffff; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 1000;
         }
-
-        .title-img {
-            width: 100%;
-            display: block;
-            height: auto;
+        .modal-content { text-align: center; width: 80%; max-width: 300px; }
+        .modal-content h2 { font-size: 1.4rem; margin-bottom: 10px; color: #111; }
+        .modal-content p { font-size: 0.9rem; color: #666; margin-bottom: 20px; }
+        
+        .modal-content input { 
+            width: 100%; padding: 12px; margin-bottom: 15px;
+            font-size: 1.1rem; text-align: center; border: 1px solid #ddd;
+            border-radius: 8px; box-sizing: border-box; outline: none;
         }
-
-        h1 { 
-            font-size: 1.4rem;
-            margin: 20px;
-            font-weight: 800;
-            text-align: left;
+        .modal-content input:focus { border-color: #00D564; }
+        
+        .modal-content button {
+            width: 100%; padding: 12px; background-color: #00D564; color: white;
+            border: none; border-radius: 8px; font-weight: bold; font-size: 1rem;
+            cursor: pointer; transition: background 0.2s;
         }
+        .modal-content button:active { background-color: #00b354; }
 
-        .episode-list {
-            list-style: none;
-            padding: 0;
-            width: 100%;
-            max-width: 720px;
-        }
+        /* 3. 본문 레이아웃 */
+        header { width: 100%; max-width: 720px; border-bottom: 1px solid #eeeeee; }
+        .title-img { width: 100%; display: block; height: auto; }
+        h1 { font-size: 1.4rem; margin: 20px; font-weight: 800; text-align: left; }
 
-        .episode-item {
-            border-bottom: 1px solid #f2f2f2;
-        }
-
+        .episode-list { list-style: none; padding: 0; width: 100%; max-width: 720px; }
+        .episode-item { border-bottom: 1px solid #f2f2f2; }
         .episode-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #333333;
-            padding: 25px 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: #333333; padding: 25px 20px;
+            font-size: 1.1rem; font-weight: 600;
         }
+        .episode-link:active { background-color: #f9f9f9; color: #00D564; }
 
-        .episode-link:active, .episode-link:hover {
-            background-color: #f9f9f9;
-            color: #00D564;
-        }
-
-        footer {
-            margin-top: auto;
-            padding: 40px 0;
-            font-size: 0.8rem;
-            color: #999999;
-        }
+        footer { margin-top: auto; padding: 40px 0; font-size: 0.8rem; color: #999999; }
     </style>
 </head>
 <body>
 
+    <div id="pw-modal">
+        <div class="modal-content">
+            <h2>비밀번호를 입력하세요</h2>
+            <p>(힌트: 퍼명세 탄신일)</p>
+            <input type="password" id="pw-input" placeholder="비밀번호 입력" onkeypress="if(event.keyCode==13) checkPassword()">
+            <button onclick="checkPassword()">확인</button>
+        </div>
+    </div>
+
     <header>
         <img src="title.jpg" alt="퍼명세 타이틀" class="title-img">
+        <h2>상위 1%의 삶, 누구나 꿈꾸는 완벽한 성공, 섹시하고 퍼팩트한 남자, 박명세의 추악한 민낯을 파헤친다.</h2>
     </header>
 
     <ul class="episode-list">
         <li class="episode-item">
             <a href="./ep1/" class="episode-link">1화</a>
         </li>
-        </ul>
+    </ul>
 
     <footer>
         © 2026 퍼명세 All Rights Reserved.
     </footer>
 
     <script>
-        const pw = "1208";
-        if (sessionStorage.getItem("authenticated") === "true") {
-            document.body.style.display = "flex";
-        } else {
-            const input = prompt("비밀번호를 입력하세요.\n(힌트: 퍼명세 탄신일)");
-            if (input === pw) {
+        function checkPassword() {
+            const pw = "1208";
+            const input = document.getElementById('pw-input').value;
+            
+            // 앞뒤 공백 제거 후 비교
+            if (input && input.trim() === pw) {
                 sessionStorage.setItem("authenticated", "true");
+                document.getElementById('pw-modal').style.display = "none";
                 document.body.style.display = "flex";
             } else {
                 alert("비밀번호가 틀렸습니다.");
-                window.location.href = "about:blank";
+                document.getElementById('pw-input').value = ""; // 입력창 비우기
+            }
+        }
+
+        // 페이지 로드 시 인증 상태 확인
+        window.onload = function() {
+            if (sessionStorage.getItem("authenticated") === "true") {
+                document.getElementById('pw-modal').style.display = "none";
+                document.body.style.display = "flex";
             }
         }
     </script>
 </body>
 </html>
-
 
