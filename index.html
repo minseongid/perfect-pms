@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>[웹툰] 퍼명세</title>
     <style>
-        /* 1. 기본 테마 (네이버 웹툰 스타일) */
+        /* 1. 기본 테마 */
         body { 
             margin: 0; background-color: #ffffff; color: #111111; 
             font-family: 'Pretendard', -apple-system, sans-serif; 
-            display: none; /* 인증 전까지 본문 숨김 */
+            display: flex; /* body는 항상 보이게 설정 */
             flex-direction: column; align-items: center; min-height: 100vh;
         }
 
@@ -35,12 +35,23 @@
             border: none; border-radius: 8px; font-weight: bold; font-size: 1rem;
             cursor: pointer; transition: background 0.2s;
         }
-        .modal-content button:active { background-color: #00b354; }
 
-        /* 3. 본문 레이아웃 */
+        /* 3. 웹툰 본문 레이아웃 (인증 전 숨김) */
+        #main-content {
+            display: none; /* 처음에 숨김 처리 */
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
         header { width: 100%; max-width: 720px; border-bottom: 1px solid #eeeeee; }
         .title-img { width: 100%; display: block; height: auto; }
-        h1 { font-size: 1.4rem; margin: 20px; font-weight: 800; text-align: left; }
+        
+        /* 설명 문구 스타일 */
+        .description { 
+            font-size: 1rem; padding: 20px; line-height: 1.6; 
+            color: #444; word-break: keep-all; 
+        }
 
         .episode-list { list-style: none; padding: 0; width: 100%; max-width: 720px; }
         .episode-item { border-bottom: 1px solid #f2f2f2; }
@@ -49,9 +60,7 @@
             text-decoration: none; color: #333333; padding: 25px 20px;
             font-size: 1.1rem; font-weight: 600;
         }
-        .episode-link:active { background-color: #f9f9f9; color: #00D564; }
-
-        footer { margin-top: auto; padding: 40px 0; font-size: 0.8rem; color: #999999; }
+        footer { padding: 40px 0; font-size: 0.8rem; color: #999999; }
     </style>
 </head>
 <body>
@@ -65,45 +74,50 @@
         </div>
     </div>
 
-    <header>
-        <img src="title.jpg" alt="퍼명세 타이틀" class="title-img">
-        <h2>상위 1%의 삶, 누구나 꿈꾸는 완벽한 성공, 섹시하고 퍼팩트한 남자, 박명세의 추악한 민낯을 파헤친다.</h2>
-    </header>
+    <div id="main-content">
+        <header>
+            <img src="title.jpg" alt="퍼명세 타이틀" class="title-img">
+            <div class="description">
+                상위 1%의 삶, 누구나 꿈꾸는 완벽한 성공, 섹시하고 퍼팩트한 남자, 박명세의 추악한 민낯을 파헤친다.
+            </div>
+        </header>
 
-    <ul class="episode-list">
-        <li class="episode-item">
-            <a href="./ep1/" class="episode-link">1화</a>
-        </li>
-    </ul>
+        <ul class="episode-list">
+            <li class="episode-item">
+                <a href="./ep1/" class="episode-link">1화</a>
+            </li>
+        </ul>
 
-    <footer>
-        © 2026 퍼명세 All Rights Reserved.
-    </footer>
+        <footer>
+            © 2026 퍼명세 All Rights Reserved.
+        </footer>
+    </div>
 
     <script>
         function checkPassword() {
             const pw = "1208";
             const input = document.getElementById('pw-input').value;
             
-            // 앞뒤 공백 제거 후 비교
             if (input && input.trim() === pw) {
-                sessionStorage.setItem("authenticated", "true");
-                document.getElementById('pw-modal').style.display = "none";
-                document.body.style.display = "flex";
+                showContent();
             } else {
                 alert("비밀번호가 틀렸습니다.");
-                document.getElementById('pw-input').value = ""; // 입력창 비우기
+                document.getElementById('pw-input').value = "";
             }
+        }
+
+        function showContent() {
+            sessionStorage.setItem("authenticated", "true");
+            document.getElementById('pw-modal').style.display = "none";
+            document.getElementById('main-content').style.display = "flex";
         }
 
         // 페이지 로드 시 인증 상태 확인
         window.onload = function() {
             if (sessionStorage.getItem("authenticated") === "true") {
-                document.getElementById('pw-modal').style.display = "none";
-                document.body.style.display = "flex";
+                showContent();
             }
         }
     </script>
 </body>
 </html>
-
